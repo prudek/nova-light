@@ -1,0 +1,7 @@
+menu "diagnostics component"
+
+config DIAGNOSTICS_ENABLED
+    bool "Enable diagnostics component"
+    default y
+
+endmenu

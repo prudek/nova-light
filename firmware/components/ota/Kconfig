@@ -1,0 +1,7 @@
+menu "ota component"
+
+config OTA_ENABLED
+    bool "Enable ota component"
+    default y
+
+endmenu

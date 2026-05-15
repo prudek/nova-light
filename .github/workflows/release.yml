@@ -1,0 +1,36 @@
+name: Release Firmware
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version, for example 0.1.0
+        required: true
+  push:
+    tags:
+      - 'v*.*.*'
+jobs:
+  release-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build release firmware
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: release-v5.4
+          target: esp32
+          path: firmware
+          command: idf.py build
+      - name: Generate manifest and release notes
+        run: |
+          python3 tools/release/make_firmware_manifest.py firmware/build VERSION > firmware/build/manifest.json
+          python3 tools/release/generate_changelog_stub.py > firmware/build/release-notes.md
+      - name: Upload release package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-release-package
+          path: |
+            firmware/build/*.bin
+            firmware/build/bootloader/*.bin
+            firmware/build/partition_table/*.bin
+            firmware/build/manifest.json
+            firmware/build/release-notes.md

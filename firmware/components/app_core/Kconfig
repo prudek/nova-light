@@ -1,0 +1,7 @@
+menu "app_core component"
+
+config APP_CORE_ENABLED
+    bool "Enable app_core component"
+    default y
+
+endmenu

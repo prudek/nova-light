@@ -1,0 +1,57 @@
+name: Firmware Build
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: ESP-IDF target
+        required: true
+        default: esp32
+        type: choice
+        options: [esp32, esp32s2, esp32s3]
+  pull_request:
+    paths:
+      - 'firmware/**'
+      - '.github/workflows/firmware-build.yml'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [esp32, esp32s2, esp32s3]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ESP-IDF project
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: release-v5.4
+          target: ${{ github.event.inputs.target || matrix.target }}
+          path: firmware
+          command: |
+            idf.py --version
+            idf.py build
+      - name: Package firmware artifacts
+        if: always()
+        run: |
+          python3 tools/release/make_firmware_manifest.py firmware/build VERSION > firmware/build/manifest.json || true
+      - name: Verify required build artifacts
+        if: success()
+        run: |
+          test -f firmware/build/bootloader/bootloader.bin
+          test -f firmware/build/partition_table/partition-table.bin
+          ls firmware/build/*.bin >/dev/null
+          ls firmware/build/*.elf >/dev/null
+      - name: Upload build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-${{ github.event.inputs.target || matrix.target }}
+          path: |
+            firmware/build/*.bin
+            firmware/build/*.elf
+            firmware/build/*.map
+            firmware/build/bootloader/*.bin
+            firmware/build/partition_table/*.bin
+            firmware/build/manifest.json
+            firmware/build/log/*
+          if-no-files-found: warn

@@ -1,0 +1,7 @@
+menu "connectivity component"
+
+config CONNECTIVITY_ENABLED
+    bool "Enable connectivity component"
+    default y
+
+endmenu

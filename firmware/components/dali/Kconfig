@@ -1,0 +1,7 @@
+menu "dali component"
+
+config DALI_ENABLED
+    bool "Enable dali component"
+    default y
+
+endmenu

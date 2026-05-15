@@ -1,0 +1,19 @@
+name: PR Fast Check
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  fast-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate repository metadata
+        run: |
+          test -f AGENTS.md
+          test -f VERSION
+          test -f firmware/partitions.csv
+      - name: Markdown structure check
+        run: |
+          python3 tools/ci/check_markdown_structure.py

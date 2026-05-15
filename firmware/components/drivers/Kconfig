@@ -1,0 +1,7 @@
+menu "drivers component"
+
+config DRIVERS_ENABLED
+    bool "Enable drivers component"
+    default y
+
+endmenu

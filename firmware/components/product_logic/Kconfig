@@ -1,0 +1,7 @@
+menu "product_logic component"
+
+config PRODUCT_LOGIC_ENABLED
+    bool "Enable product_logic component"
+    default y
+
+endmenu

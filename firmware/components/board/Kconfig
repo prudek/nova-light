@@ -1,0 +1,7 @@
+menu "board component"
+
+config BOARD_ENABLED
+    bool "Enable board component"
+    default y
+
+endmenu

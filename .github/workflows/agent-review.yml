@@ -1,0 +1,11 @@
+name: Agent Review Checklist
+on:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  checklist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Print agent review checklist
+        run: cat .codex/review-checklists.md

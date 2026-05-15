@@ -1,0 +1,7 @@
+menu "storage component"
+
+config STORAGE_ENABLED
+    bool "Enable storage component"
+    default y
+
+endmenu
