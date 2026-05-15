@@ -22,7 +22,7 @@ jobs:
       matrix:
         target: [esp32, esp32s2, esp32s3]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Build ESP-IDF project
         uses: espressif/esp-idf-ci-action@v1
         with:
