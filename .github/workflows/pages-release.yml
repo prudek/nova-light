@@ -33,6 +33,7 @@ jobs:
             "https://api.github.com/repos/${{ github.repository }}/releases?per_page=30" \
             > releases-api.json
           python3 tools/release/generate_release_index.py releases-api.json site-dist/releases.json
+          python3 tools/release/materialize_pages_assets.py releases-api.json site-dist/releases.json site-dist
           touch site-dist/.nojekyll
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
