@@ -41,6 +41,14 @@ For every task:
 7. Update docs/backlog/decision log when durable project knowledge changes.
 8. Finish with a concise report.
 
+Before pushing code or opening/updating a PR, run local preflight verification in an activated ESP-IDF environment:
+
+```bash
+python tools/ci/local_preflight.py
+```
+
+The command must pass for both `esp32` and `esp32s3`. This rule is environment-agnostic and applies on Windows, Linux, and macOS.
+
 ## Final report format
 
 ```markdown

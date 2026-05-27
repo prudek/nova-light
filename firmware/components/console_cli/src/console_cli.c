@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 #include "esp_console.h"
-#include "esp_console_repl.h"
 #include "esp_app_desc.h"
 #include "esp_err.h"
 #include "esp_log.h"
@@ -76,7 +75,6 @@ esp_err_t console_cli_start(void)
 
     esp_console_repl_config_t repl_config = ESP_CONSOLE_REPL_CONFIG_DEFAULT();
     repl_config.prompt = "nova> ";
-    repl_config.max_cmdline_args = 8;
     repl_config.max_cmdline_length = 128;
 
     esp_console_dev_uart_config_t uart_config = ESP_CONSOLE_DEV_UART_CONFIG_DEFAULT();
