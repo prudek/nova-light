@@ -37,7 +37,7 @@ jobs:
           python3 tools/release/materialize_pages_assets.py releases-api.json site-dist/releases.json site-dist
           touch site-dist/.nojekyll
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: site-dist
 
