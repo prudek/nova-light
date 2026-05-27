@@ -68,6 +68,8 @@ jobs:
           command: |
             idf.py build
             idf.py merge-bin -f raw -o nova-light-${{ matrix.platform_label }}-v${{ needs.resolve-version.outputs.release_version }}.bin
+      - name: Fix build directory ownership
+        run: sudo chown -R "$USER:$USER" firmware/build
       - name: Generate release metadata
         run: |
           RELEASE_VERSION="${{ needs.resolve-version.outputs.release_version }}"

@@ -42,6 +42,8 @@ jobs:
             idf.py build
             VERSION_VALUE="$(tr -d '[:space:]' < ../VERSION)"
             idf.py merge-bin -f raw -o nova-light-${{ matrix.platform_label }}-v${VERSION_VALUE}.bin
+      - name: Fix build directory ownership
+        run: sudo chown -R "$USER:$USER" firmware/build
       - name: Package firmware artifacts
         if: always()
         run: |
