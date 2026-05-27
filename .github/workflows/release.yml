@@ -67,7 +67,7 @@ jobs:
           path: firmware
           command: |
             idf.py build
-            idf.py merge-bin -f raw -o build/nova-light-${{ matrix.platform_label }}-v${{ needs.resolve-version.outputs.release_version }}.bin
+            idf.py merge-bin -f raw -o nova-light-${{ matrix.platform_label }}-v${{ needs.resolve-version.outputs.release_version }}.bin
       - name: Generate release metadata
         run: |
           RELEASE_VERSION="${{ needs.resolve-version.outputs.release_version }}"

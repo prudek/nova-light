@@ -41,7 +41,7 @@ jobs:
             idf.py --version
             idf.py build
             VERSION_VALUE="$(tr -d '[:space:]' < ../VERSION)"
-            idf.py merge-bin -f raw -o build/nova-light-${{ matrix.platform_label }}-v${VERSION_VALUE}.bin
+            idf.py merge-bin -f raw -o nova-light-${{ matrix.platform_label }}-v${VERSION_VALUE}.bin
       - name: Package firmware artifacts
         if: always()
         run: |
