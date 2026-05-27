@@ -22,6 +22,20 @@ idf.py set-target esp32
 idf.py build
 ```
 
+## Release quick start
+
+```bash
+python tools/release/cli.py prepare --bump patch
+python tools/release/cli.py publish
+```
+
+The release workflow publishes merged `.bin` assets for:
+
+- `esp32-esp-wroom-32`
+- `esp32-s3-pico`
+
+The firmware installer page is generated from `web/` and deployed by GitHub Pages after each published release.
+
 ## Repository contract
 
 All contributors must read `AGENTS.md` before making changes. Scoped instructions exist in selected subdirectories and must be followed when working there.
