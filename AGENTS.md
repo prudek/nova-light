@@ -76,6 +76,7 @@ The command must pass for both `esp32` and `esp32s3`. This rule is environment-a
 - Documentation is written in English.
 - Architectural changes require `docs/product/decision-log.md` updates.
 - Repeated human feedback that changes the way the agent should work should be captured in `AGENTS.md` or a scoped `AGENTS.md`.
+- Every pull request prepared by the agent must include a `CHANGELOG.md` update under `## [Unreleased]` before merge/release preparation.
 
 ## Backlog rules
 
