@@ -1,7 +1,7 @@
 # Nova Light Firmware Repository
 
 [![Latest Release](https://img.shields.io/github/v/release/prudek/nova-light)](https://github.com/prudek/nova-light/releases/latest)
-[![Novalight Firmware Build](https://github.com/prudek/nova-light/actions/workflows/firmware-build.yml/badge.svg)](https://github.com/prudek/nova-light/actions/workflows/firmware-build.yml)
+[![Novalight Firmware Build](https://github.com/prudek/nova-light/actions/workflows/firmware-build.yml/badge.svg?branch=main&event=pull_request)](https://github.com/prudek/nova-light/actions/workflows/firmware-build.yml)
 [![Novalight Release Firmware](https://github.com/prudek/nova-light/actions/workflows/release.yml/badge.svg)](https://github.com/prudek/nova-light/actions/workflows/release.yml)
 [![Novalight Firmware Uploader Deployment](https://github.com/prudek/nova-light/actions/workflows/pages-release.yml/badge.svg)](https://github.com/prudek/nova-light/actions/workflows/pages-release.yml)
 

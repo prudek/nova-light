@@ -6,6 +6,10 @@ The release pipeline may append generated release notes derived from conventiona
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-05-27
+### Added
+- CLI `status` command for release smoke checks (version, uptime, heap, IDF, cores).
+
 ## [0.1.1] - 2026-05-27
 ### Added
 - Initial agent-ready ESP-IDF repository structure.
