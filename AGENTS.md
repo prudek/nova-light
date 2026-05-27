@@ -82,3 +82,8 @@ The command must pass for both `esp32` and `esp32s3`. This rule is environment-a
 - Lightweight backlog items live under `backlog/`.
 - If technical debt is discovered, the agent may create a task in `backlog/tasks/` using YAML front matter.
 - Do not inflate the backlog with trivial cleanup items.
+
+## Branch and PR naming
+
+- When creating branches or pull requests, use the `prudek` prefix.
+- Do not use the `codex` prefix for branch or PR naming.
