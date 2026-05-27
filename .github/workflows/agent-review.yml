@@ -1,4 +1,4 @@
-name: Agent Review Checklist
+name: Novalight Agent Review Checklist
 on:
   pull_request:
   workflow_dispatch:

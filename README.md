@@ -1,5 +1,10 @@
 # Nova Light Firmware Repository
 
+[![Latest Release](https://img.shields.io/github/v/release/prudek/nova-light)](https://github.com/prudek/nova-light/releases/latest)
+[![Novalight Firmware Build](https://github.com/prudek/nova-light/actions/workflows/firmware-build.yml/badge.svg)](https://github.com/prudek/nova-light/actions/workflows/firmware-build.yml)
+[![Novalight Release Firmware](https://github.com/prudek/nova-light/actions/workflows/release.yml/badge.svg)](https://github.com/prudek/nova-light/actions/workflows/release.yml)
+[![Novalight Firmware Uploader Deployment](https://github.com/prudek/nova-light/actions/workflows/pages-release.yml/badge.svg)](https://github.com/prudek/nova-light/actions/workflows/pages-release.yml)
+
 This repository contains the `nova-light` ESP-IDF firmware project for the ESP32 family. It is set up for collaborative delivery with humans and coding agents, using a template-first workflow with GitHub Actions, component-oriented architecture, OTA-ready partitioning, lightweight backlog management, and human-gated hardware-in-the-loop validation.
 
 ## Starting assumptions

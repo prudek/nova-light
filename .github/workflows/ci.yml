@@ -1,4 +1,4 @@
-name: PR Fast Check
+name: Novalight PR Fast Check
 on:
   pull_request:
   push:
