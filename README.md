@@ -60,3 +60,13 @@ The firmware uploader page is generated from `web/` and deployed automatically a
 ## Repository contract
 
 All contributors must read `AGENTS.md` before making changes. Scoped instructions exist in selected subdirectories and must be followed when working there.
+
+## License
+
+This project is licensed under the GNU Affero General Public License v3.0 (AGPLv3).
+
+This means that you may use, study, modify, and redistribute this software under the terms of the AGPLv3. If you modify this software or make it available to users over a network, including as part of a hosted service, SaaS platform, internal web application, commissioning tool, diagnostic system, or product-integrated service, you must make the corresponding source code available under the same license.
+
+For use cases where AGPLv3 obligations are not acceptable, including proprietary or closed-source commercial integrations, please contact the project owner to discuss a separate commercial license.
+
+See the `LICENSE` file for the full license text.
