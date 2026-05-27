@@ -15,14 +15,30 @@ This repository contains the `nova-light` ESP-IDF firmware project for the ESP32
 - Agent mode: balanced autonomy with safety gates.
 - Documentation language: English.
 
-## First local commands
+## Build Firmware Locally
 
 ```bash
-idf.py set-target esp32
-idf.py build
+idf.py -C firmware set-target esp32
+idf.py -C firmware build
+idf.py -C firmware set-target esp32s3
+idf.py -C firmware build
 ```
 
-## Release quick start
+Before push/PR updates, run the required local preflight:
+
+```bash
+python tools/ci/local_preflight.py
+```
+
+## Install via Web Uploader
+
+Use the hosted installer page for `esp32-esp-wroom-32` and `esp32-s3-pico`:
+
+- https://prudek.github.io/nova-light/
+
+If Web Serial is unavailable, use the manual `.bin` download links from the same page.
+
+## Release Quick Start
 
 ```bash
 python tools/release/cli.py prepare --bump patch
@@ -34,7 +50,7 @@ The release workflow publishes merged `.bin` assets for:
 - `esp32-esp-wroom-32`
 - `esp32-s3-pico`
 
-The firmware installer page is generated from `web/` and deployed by GitHub Pages after each published release.
+The firmware uploader page is generated from `web/` and deployed automatically after successful release workflows.
 
 ## Repository contract
 

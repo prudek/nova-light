@@ -1,4 +1,4 @@
-name: Deploy Firmware Pages
+name: Novalight Firmware Uploader Deployment
 on:
   release:
     types: [published]
@@ -15,6 +15,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
+    name: Build Novalight Firmware Uploader
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     env:
@@ -41,6 +42,7 @@ jobs:
           path: site-dist
 
   deploy:
+    name: Deploy Novalight Firmware Uploader
     needs: build
     runs-on: ubuntu-latest
     environment:
