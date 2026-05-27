@@ -14,3 +14,13 @@ idf.py build
 ```
 
 If `idf.py` is not found, initialize your ESP-IDF environment first (for example by sourcing `export.sh` on Linux/macOS or running `export.bat`/`export.ps1` on Windows in your ESP-IDF installation).
+
+## Required Pre-Push Verification
+
+After activating your ESP-IDF environment, run:
+
+```bash
+python tools/ci/local_preflight.py
+```
+
+This verifies the release targets (`esp32`, `esp32s3`) locally before push/PR updates.

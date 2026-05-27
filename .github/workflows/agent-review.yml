@@ -9,5 +9,14 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - uses: actions/checkout@v4
+      - name: Verify local preflight policy artifacts
+        run: |
+          test -f tools/ci/local_preflight.py
+          grep -q "python tools/ci/local_preflight.py" AGENTS.md
       - name: Print agent review checklist
-        run: cat .codex/review-checklists.md
+        run: |
+          if [ -f .codex/review-checklists.md ]; then
+            cat .codex/review-checklists.md
+          else
+            echo "No review checklist configured (.codex/review-checklists.md missing)."
+          fi

@@ -1,11 +1,12 @@
-# ESP32 Production Firmware Agent Repository
+# Nova Light Firmware Repository
 
-This repository is a production ESP-IDF firmware project for the ESP32 family. It is designed for agent-assisted development with OpenAI Codex, GitHub Actions, ESP-IDF, component-oriented firmware architecture, OTA-ready partitioning, lightweight backlog management, and human-gated hardware-in-the-loop validation.
+This repository contains the `nova-light` ESP-IDF firmware project for the ESP32 family. It is set up for collaborative delivery with humans and coding agents, using a template-first workflow with GitHub Actions, component-oriented architecture, OTA-ready partitioning, lightweight backlog management, and human-gated hardware-in-the-loop validation.
 
 ## Starting assumptions
 
 - Framework: ESP-IDF.
-- Initial targets: ESP32 family, with `esp32`, `esp32s2`, `esp32s3`, and future ESP32 variants treated as supported target classes.
+- Initial release targets: `esp32-esp-wroom-32` (`esp32`) and `esp32-s3-pico` (`esp32s3`).
+- Future ESP32 variants are supported as target classes when platform mapping is added.
 - Languages: C and C++.
 - Architecture: component-based firmware with a Board Abstraction Layer.
 - Connectivity: Wi-Fi, BLE, Ethernet, MQTT, HTTP, and DALI-ready abstractions.
@@ -23,4 +24,4 @@ idf.py build
 
 ## Repository contract
 
-Codex and human contributors must read `AGENTS.md` before making changes. Scoped instructions exist in selected subdirectories and must be followed when working there.
+All contributors must read `AGENTS.md` before making changes. Scoped instructions exist in selected subdirectories and must be followed when working there.
