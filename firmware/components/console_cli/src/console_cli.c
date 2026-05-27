@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "esp_app_desc.h"
+#include "esp_chip_info.h"
 #include "esp_console.h"
 #include "esp_err.h"
 #include "esp_log.h"
