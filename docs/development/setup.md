@@ -24,3 +24,14 @@ python tools/ci/local_preflight.py
 ```
 
 This verifies the release targets (`esp32`, `esp32s3`) locally before push/PR updates.
+
+## Local Release Commands
+
+Use these commands for semantic releases:
+
+```bash
+python tools/release/cli.py prepare --bump patch
+python tools/release/cli.py publish
+```
+
+`prepare` includes the same local preflight gate and refuses to continue on a dirty git state.

@@ -1,0 +1,133 @@
+:root {
+  --bg-start: #f6efe6;
+  --bg-end: #d8e9f2;
+  --card: #ffffff;
+  --ink: #1d2228;
+  --muted: #5b6673;
+  --line: #d9dde2;
+  --primary: #0f6f8f;
+  --primary-ink: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at 10% 10%, var(--bg-start), var(--bg-end));
+}
+
+.layout {
+  width: min(960px, 100% - 2rem);
+  margin: 2rem auto;
+  display: grid;
+  gap: 1rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 10px 24px rgba(18, 31, 45, 0.06);
+}
+
+.hero h1 {
+  margin: 0.2rem 0 0.5rem;
+}
+
+.eyebrow {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.lead {
+  margin: 0;
+  color: var(--muted);
+}
+
+.grid {
+  display: grid;
+  gap: 0.4rem;
+  max-width: 340px;
+}
+
+label {
+  font-weight: 600;
+}
+
+select {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.6rem 0.7rem;
+  font: inherit;
+}
+
+.hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.install-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  align-items: center;
+}
+
+esp-web-install-button::part(button) {
+  background: var(--primary);
+  color: var(--primary-ink);
+  border-radius: 10px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  padding: 0.62rem 0.9rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.manual {
+  margin-top: 1rem;
+}
+
+pre {
+  background: #f4f7fa;
+  border-radius: 8px;
+  padding: 0.8rem;
+  overflow-x: auto;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  margin-top: 1rem;
+}
+
+.older-releases {
+  margin-top: 1rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.8rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+@media (max-width: 700px) {
+  .layout {
+    width: min(960px, 100% - 1rem);
+    margin: 1rem auto;
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-05-27T08:32:24.980278+00:00",
+  "platforms": [
+    {
+      "id": "esp32-esp-wroom-32",
+      "label": "ESP32 / ESP-WROOM-32",
+      "idf_target": "esp32",
+      "chip_family": "ESP32"
+    },
+    {
+      "id": "esp32-s3-pico",
+      "label": "ESP32-S3-PICO",
+      "idf_target": "esp32s3",
+      "chip_family": "ESP32-S3"
+    }
+  ],
+  "latest": null,
+  "releases": []
+}

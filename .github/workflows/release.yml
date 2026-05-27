@@ -8,19 +8,14 @@ on:
   push:
     tags:
       - 'v*.*.*'
+permissions:
+  contents: read
 jobs:
-  release-build:
+  resolve-version:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - idf_target: esp32
-            platform_label: esp32-esp-wroom-32
-          - idf_target: esp32s3
-            platform_label: esp32-s3-pico
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    outputs:
+      release_version: ${{ steps.release_version.outputs.release_version }}
+      release_tag: ${{ steps.release_version.outputs.release_tag }}
     steps:
       - uses: actions/checkout@v4
       - name: Validate release version
@@ -45,26 +40,87 @@ jobs:
             RELEASE_VERSION="$INPUT_VERSION"
           fi
           echo "release_version=$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
+          echo "release_tag=v$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
+
+  release-build:
+    needs: resolve-version
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - idf_target: esp32
+            platform_label: esp32-esp-wroom-32
+            chip_family: ESP32
+          - idf_target: esp32s3
+            platform_label: esp32-s3-pico
+            chip_family: ESP32-S3
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - uses: actions/checkout@v4
       - name: Build release firmware
         uses: espressif/esp-idf-ci-action@v1
         with:
           esp_idf_version: release-v5.4
           target: ${{ matrix.idf_target }}
           path: firmware
-          command: idf.py build
-      - name: Generate manifest and release notes
+          command: |
+            idf.py build
+            idf.py merge-bin -f raw -o build/nova-light-${{ matrix.platform_label }}-v${{ needs.resolve-version.outputs.release_version }}.bin
+      - name: Generate release metadata
         run: |
-          python3 tools/release/make_firmware_manifest.py firmware/build VERSION "${{ matrix.idf_target }}" "${{ matrix.platform_label }}" > firmware/build/manifest.json
-          python3 tools/release/generate_changelog_stub.py "${{ steps.release_version.outputs.release_version }}" > firmware/build/release-notes.md
-      - name: Upload release package artifact
+          RELEASE_VERSION="${{ needs.resolve-version.outputs.release_version }}"
+          RELEASE_TAG="${{ needs.resolve-version.outputs.release_tag }}"
+          PLATFORM_LABEL="${{ matrix.platform_label }}"
+          CHIP_FAMILY="${{ matrix.chip_family }}"
+          MERGED_BIN="nova-light-${PLATFORM_LABEL}-v${RELEASE_VERSION}.bin"
+          BIN_URL="https://github.com/${{ github.repository }}/releases/download/${RELEASE_TAG}/${MERGED_BIN}"
+
+          python3 tools/release/make_firmware_manifest.py firmware/build VERSION "${{ matrix.idf_target }}" "${PLATFORM_LABEL}" > "firmware/build/firmware-manifest-${PLATFORM_LABEL}.json"
+          python3 tools/release/make_web_manifest.py "${RELEASE_VERSION}" "${{ matrix.idf_target }}" "${PLATFORM_LABEL}" "${CHIP_FAMILY}" "${BIN_URL}" "firmware/build/manifest-${PLATFORM_LABEL}.json"
+          python3 tools/release/extract_release_notes.py "${RELEASE_VERSION}" > firmware/build/release-notes.md
+
+          test -f "firmware/build/${MERGED_BIN}"
+          test -f "firmware/build/manifest-${PLATFORM_LABEL}.json"
+          test -f "firmware/build/firmware-manifest-${PLATFORM_LABEL}.json"
+      - name: Upload release package artifact (platform)
         uses: actions/upload-artifact@v4
         with:
-          name: firmware-release-${{ matrix.platform_label }}-v${{ steps.release_version.outputs.release_version }}
+          name: release-package-${{ matrix.platform_label }}
           path: |
-            firmware/build/*.bin
-            firmware/build/*.elf
-            firmware/build/*.map
-            firmware/build/bootloader/*.bin
-            firmware/build/partition_table/*.bin
-            firmware/build/manifest.json
+            firmware/build/nova-light-${{ matrix.platform_label }}-v${{ needs.resolve-version.outputs.release_version }}.bin
+            firmware/build/manifest-${{ matrix.platform_label }}.json
+            firmware/build/firmware-manifest-${{ matrix.platform_label }}.json
             firmware/build/release-notes.md
+
+  publish-release:
+    needs: [resolve-version, release-build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download platform packages
+        uses: actions/download-artifact@v4
+        with:
+          pattern: release-package-*
+          merge-multiple: true
+          path: release-assets
+      - name: Assemble release package
+        run: |
+          RELEASE_VERSION="${{ needs.resolve-version.outputs.release_version }}"
+          python3 tools/release/assemble_release_manifest.py "${RELEASE_VERSION}" release-assets/manifest.json release-assets/firmware-manifest-*.json
+          sha256sum release-assets/*.bin release-assets/manifest*.json > "release-assets/checksums-v${RELEASE_VERSION}.txt"
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ needs.resolve-version.outputs.release_tag }}
+          name: nova-light v${{ needs.resolve-version.outputs.release_version }}
+          body_path: release-assets/release-notes.md
+          files: |
+            release-assets/*.bin
+            release-assets/manifest*.json
+            release-assets/checksums-v${{ needs.resolve-version.outputs.release_version }}.txt

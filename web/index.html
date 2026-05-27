@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>nova-light Firmware Installer</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script defer src="./app.js"></script>
+  </head>
+  <body>
+    <main class="layout">
+      <section class="hero card">
+        <p class="eyebrow">nova-light</p>
+        <h1>Install Firmware</h1>
+        <p class="lead">
+          Flash the latest firmware directly from the browser for
+          <strong>ESP-WROOM-32</strong> and <strong>ESP32-S3-PICO</strong>.
+        </p>
+      </section>
+
+      <section class="card">
+        <div class="grid">
+          <label for="platform-select">Platform</label>
+          <select id="platform-select"></select>
+          <p class="hint">Release: <span id="release-label">loading...</span></p>
+        </div>
+
+        <div class="install-actions">
+          <esp-web-install-button id="install-button">
+            <button slot="activate">Install via Web Serial</button>
+            <span slot="unsupported">Use Chrome or Edge on desktop with HTTPS.</span>
+            <span slot="not-allowed">Web Serial needs HTTPS context.</span>
+          </esp-web-install-button>
+          <a id="manual-download-link" class="button secondary" href="#" target="_blank" rel="noreferrer">Download BIN manually</a>
+        </div>
+
+        <div class="manual">
+          <h2>Manual Flash (esptool)</h2>
+          <pre><code>esptool.py --chip &lt;esp32|esp32s3&gt; --port &lt;PORT&gt; write_flash 0x0 nova-light-&lt;platform&gt;-vX.Y.Z.bin</code></pre>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Changelog</h2>
+        <article id="release-notes" class="markdown"></article>
+        <div id="older-releases" class="older-releases"></div>
+      </section>
+    </main>
+  </body>
+</html>

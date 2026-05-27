@@ -23,3 +23,9 @@ Reason: Product release bundles are now explicitly published for `esp32-esp-wroo
 Status: accepted
 
 Reason: Local verification for `esp32` and `esp32s3` is required before push/PR updates to reduce avoidable CI failures and conserve remote pipeline time. The preflight command relies on an activated ESP-IDF environment and must not depend on machine-specific paths.
+
+## ADR-0005: Use tag-driven dual-platform release with GitHub Pages installer
+
+Status: accepted
+
+Reason: A release created from `vX.Y.Z` now publishes explicit merged binaries for `esp32-esp-wroom-32` and `esp32-s3-pico`, plus web-flash manifests, then rebuilds a public static installer page with release changelog and download links.

@@ -1,12 +1,23 @@
 name: Firmware Build
 on:
   workflow_dispatch:
+    inputs:
+      target:
+        description: Build target selection
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - esp32
+          - esp32s3
   pull_request:
     paths:
       - 'firmware/**'
       - '.github/workflows/firmware-build.yml'
 jobs:
   build:
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.target == 'all' || matrix.target == inputs.target }}
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -29,16 +40,27 @@ jobs:
           command: |
             idf.py --version
             idf.py build
+            VERSION_VALUE="$(tr -d '[:space:]' < ../VERSION)"
+            idf.py merge-bin -f raw -o build/nova-light-${{ matrix.platform_label }}-v${VERSION_VALUE}.bin
       - name: Package firmware artifacts
         if: always()
         run: |
           TARGET="${{ matrix.target }}"
+          VERSION_VALUE="$(tr -d '[:space:]' < VERSION)"
           case "$TARGET" in
             esp32) PLATFORM_LABEL="esp32-esp-wroom-32" ;;
             esp32s3) PLATFORM_LABEL="esp32-s3-pico" ;;
             *) PLATFORM_LABEL="$TARGET" ;;
           esac
-          python3 tools/release/make_firmware_manifest.py firmware/build VERSION "$TARGET" "$PLATFORM_LABEL" > firmware/build/manifest.json || true
+          python3 tools/release/make_firmware_manifest.py firmware/build VERSION "$TARGET" "$PLATFORM_LABEL" > "firmware/build/firmware-manifest-${PLATFORM_LABEL}.json" || true
+          if [ -f "firmware/build/nova-light-${PLATFORM_LABEL}-v${VERSION_VALUE}.bin" ]; then
+            CHIP_FAMILY="ESP32"
+            if [ "$TARGET" = "esp32s3" ]; then
+              CHIP_FAMILY="ESP32-S3"
+            fi
+            BIN_URL="nova-light-${PLATFORM_LABEL}-v${VERSION_VALUE}.bin"
+            python3 tools/release/make_web_manifest.py "${VERSION_VALUE}" "$TARGET" "${PLATFORM_LABEL}" "${CHIP_FAMILY}" "${BIN_URL}" "firmware/build/manifest-${PLATFORM_LABEL}.json" || true
+          fi
       - name: Verify required build artifacts
         if: success()
         run: |
@@ -57,6 +79,7 @@ jobs:
             firmware/build/*.map
             firmware/build/bootloader/*.bin
             firmware/build/partition_table/*.bin
-            firmware/build/manifest.json
+            firmware/build/manifest-*.json
+            firmware/build/firmware-manifest-*.json
             firmware/build/log/*
           if-no-files-found: warn
