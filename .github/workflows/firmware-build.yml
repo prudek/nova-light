@@ -1,13 +1,6 @@
 name: Firmware Build
 on:
   workflow_dispatch:
-    inputs:
-      target:
-        description: ESP-IDF target
-        required: true
-        default: esp32
-        type: choice
-        options: [esp32, esp32s2, esp32s3]
   pull_request:
     paths:
       - 'firmware/**'
@@ -20,14 +13,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [esp32, esp32s2, esp32s3]
+        include:
+          - target: esp32
+            platform_label: esp32-esp-wroom-32
+          - target: esp32s3
+            platform_label: esp32-s3-pico
     steps:
       - uses: actions/checkout@v4
       - name: Build ESP-IDF project
         uses: espressif/esp-idf-ci-action@v1
         with:
           esp_idf_version: release-v5.4
-          target: ${{ github.event.inputs.target || matrix.target }}
+          target: ${{ matrix.target }}
           path: firmware
           command: |
             idf.py --version
@@ -35,7 +32,13 @@ jobs:
       - name: Package firmware artifacts
         if: always()
         run: |
-          python3 tools/release/make_firmware_manifest.py firmware/build VERSION > firmware/build/manifest.json || true
+          TARGET="${{ matrix.target }}"
+          case "$TARGET" in
+            esp32) PLATFORM_LABEL="esp32-esp-wroom-32" ;;
+            esp32s3) PLATFORM_LABEL="esp32-s3-pico" ;;
+            *) PLATFORM_LABEL="$TARGET" ;;
+          esac
+          python3 tools/release/make_firmware_manifest.py firmware/build VERSION "$TARGET" "$PLATFORM_LABEL" > firmware/build/manifest.json || true
       - name: Verify required build artifacts
         if: success()
         run: |
@@ -47,7 +50,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: firmware-${{ github.event.inputs.target || matrix.target }}
+          name: firmware-${{ matrix.target }}-${{ matrix.platform_label }}
           path: |
             firmware/build/*.bin
             firmware/build/*.elf

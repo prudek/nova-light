@@ -1,0 +1,7 @@
+menu "console_cli component"
+
+config CONSOLE_CLI_ENABLED
+    bool "Enable console_cli component"
+    default y
+
+endmenu

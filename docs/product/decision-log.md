@@ -11,3 +11,9 @@ Reason: ESP-IDF provides first-party support for ESP32-family devices, component
 Status: accepted
 
 Reason: Component-level Kconfig keeps feature flags and tunables close to each component while preserving ESP-IDF-native configuration workflows.
+
+## ADR-0003: Publish release artifacts per product platform
+
+Status: accepted
+
+Reason: Product release bundles are now explicitly published for `esp32-esp-wroom-32` and `esp32-s3-pico`, with version/tag consistency checks and per-platform manifest metadata for traceability.
